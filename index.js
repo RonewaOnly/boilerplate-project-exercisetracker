@@ -11,10 +11,19 @@ app.use(express.json());
 
 const mongoURI = process.env.MONGO_URI;
 
-// Connect to MongoDB Atlas
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+let uri = process.env.MONGO_URI;
+if (!uri) {
+  console.error('No MONGO_URI found in environment variables');
+  // Provide a default MongoDB URI for development
+  uri = 'mongodb+srv://wwwrsmaselesele200:20oVStPEhOeNXYOM@ronewa-stupid.fqw9x.mongodb.net/exercise-tracker?retryWrites=true&w=majority';
+}
+
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connection successful'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // User Schema
 const userSchema = new mongoose.Schema({
